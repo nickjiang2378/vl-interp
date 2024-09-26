@@ -27,9 +27,8 @@ To install InstructBLIP, please enter the lavis repo for model-specific instruct
 ### Files
 Clone the repo and switch to the `threshold-decoding` branch.
 ```
-git clone git@github.com:spetryk/vl-hallucination.git
-cd vl-hallucination
-git checkout threshold-decoding
+git clone git@github.com:nickjiang2378/vl-interp.git
+cd vl-interp
 ```
 
 Symlink my `data` folder under the top-level of your repo, i.e., under `vl-hallucination/`:
@@ -51,13 +50,13 @@ cd src/caption/llava
 git clone https://github.com/haotian-liu/LLaVA.git
 cd LLaVA
 git checkout 414cebd318daf563e624ac5d5e02835d40573cb2
-pip install -e .
+pip3 install -e .
 
 # cd back into repo root
 cd ../../../../
-pip install -e .
+pip3 install -e .
 
 # Install some remaining packages
-pip install lightning openai-clip
+pip3 install lightning openai-clip transformers==4.37.2
 ```
 
