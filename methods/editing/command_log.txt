@@ -1,0 +1,61 @@
+[2024-09-16 02:36:05] [Status: SUCCESS] python3 test.py
+[2024-09-16 02:36:20] [Status: SUCCESS] python3 test.py
+[2024-09-16 02:36:47] [Status: SUCCESS] python3 test.py
+[2024-09-16 09:13:59] [Status: SUCCESS] python3 experiment10A.py --model_type blip13b --weight 1 --hallucinations --gt
+[2024-09-16 09:49:48] [Status: SUCCESS] python3 experiment10A.py --model_type llava7b --weight 1 --hallucinations --gt
+[2024-09-16 11:48:23] [Status: SUCCESS] python3 experiment10A.py --model_type llava7b --weight 5 --hallucinations --gt
+[2024-09-16 23:38:48] [Status: SUCCESS] python3 experiment10A.py --model_type llava7b --weight 10 --gt
+[2024-09-16 23:38:48] [Status: FAILED] python3 experiment10A --model_type blip13b --weight 5 --gt
+[2024-09-17 00:24:28] [Status: SUCCESS] python3 experiment10A.py --model_type blip13b --weight 5 --gt
+[2024-09-17 06:17:57] [Status: FAILED] python3 experiment11A.py --model_type llava7b --start_img_layer 0 --end_img_layer 10 --hallucinations
+[2024-09-18 16:58:33] [Status: SUCCESS] python3 experiment11A.py --model_type blip7b --start_img_layer 24 --end_img_layer 28 --sample_size 500 --hallucinations
+[2024-09-18 16:59:36] [Status: SUCCESS] python3 experiment11A.py --model_type blip7b --start_img_layer 28 --end_img_layer 31 --sample_size 500 --hallucinations
+[2024-09-18 16:59:51] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 0 --end_img_layer 4 --sample_size 500 --hallucinations
+[2024-09-18 17:00:05] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 4 --end_img_layer 8 --sample_size 500 --hallucinations
+[2024-09-18 17:00:18] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 8 --end_img_layer 12 --sample_size 500 --hallucinations
+[2024-09-18 17:00:33] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 12 --end_img_layer 16 --sample_size 500 --hallucinations
+[2024-09-18 17:00:46] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 16 --end_img_layer 20 --sample_size 500 --hallucinations
+[2024-09-18 17:01:01] [Status: SUCCESS] python3 experiment11A.py --model_type llava7b --start_img_layer 20 --end_img_layer 24 --sample_size 500 --hallucinations
+[2024-09-20 19:20:22] [Status: SUCCESS] python3 experiment11A.py --model_type blip7b --start_img_layer 0 --end_img_layer 4 --sample_size 500 --hallucinations
+[2024-09-20 22:16:01] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type blip7b --hallucinations
+[2024-09-22 20:20:35] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type llava7b --hallucinations
+[2024-09-22 22:13:17] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type blip7b --gt --weight 5
+[2024-09-23 00:22:20] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type llava7b --hallucinations --weight 5
+[2024-09-23 06:59:10] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type blip7b --gt
+[2024-09-23 08:52:22] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 0 --end_img_layer 4 --sample_size 500 --hallucinations
+[2024-09-23 13:50:09] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type llava7b --gt --weight 5
+[2024-09-23 13:52:01] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment9A.py --model_type llava7b --gt
+[2024-09-24 08:21:13] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 16 --end_img_layer 20 --sample_size 500 --hallucinations
+[2024-09-24 17:34:53] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 8 --end_img_layer 12 --sample_size 500 --hallucinations
+[2024-09-24 17:37:03] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 4 --end_img_layer 8 --sample_size 500 --hallucinations
+[2024-09-24 20:37:44] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 26 --end_img_layer 28 --sample_size 500 --hallucinations
+[2024-09-24 21:30:15] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination python3 experiment11A.py --model_type blip7b --start_img_layer 24 --end_img_layer 26 --sample_size 500 --hallucinations
+[2024-09-25 06:27:55] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 1 --end_weight 5 --step_size 1
+[2024-09-25 06:56:10] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 5 --e
+[2024-09-25 06:56:10] [Status: FAILED] nd_weight 10 --step_size 1 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 06:56:19] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 10 --e
+[2024-09-25 06:56:19] [Status: FAILED] nd_weight 15 --step_size 1 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 06:56:27] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 0.5 --e
+[2024-09-25 06:56:27] [Status: FAILED] nd_weight 2 --step_size 0.5 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 06:56:57] [Status: FAILED] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 5 --e
+[2024-09-25 06:56:57] [Status: FAILED] nd_weight 10 --step_size 1 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 08:34:43] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 1 --end_weight 5 --step_size 1 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 09:39:55] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 0.5 --end_weight 2 --step_size 0.5 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 12:08:00] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 1 --end_weight 5 --img_layer_index 15 --text_layer_index 30
+[2024-09-25 13:07:45] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 1 --end_weight 5 --img_layer_index 7 --text_layer_index 9
+[2024-09-25 14:52:32] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 10 --end_weight 15 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 16:11:01] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index 15 --text_layer_index 30
+[2024-09-25 16:11:57] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index 1 --text_layer_index 2
+[2024-09-25 17:09:45] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index 7 --text_layer_index 9
+[2024-09-25 18:07:44] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 10 --end_weight 15 --img_layer_index 7 --text_layer_index 9
+[2024-09-25 22:45:23] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 0.5 --end_weight 2 --step_size 0.5 --img_layer_index 9 --text_layer_index 17
+[2024-09-25 22:45:46] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 2 --end_weight 5 --img_layer_index 9 --text_layer_index 17
+[2024-09-26 00:01:14] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 0.5 --end_weight 2 --step_size 0.5 --img_layer_index 0 --text_layer_index 0
+[2024-09-26 00:37:17] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 0.5 --end_weight 2 --step_size 0.5 --img_layer_index 15 --text_layer_index 30
+[2024-09-26 03:21:01] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type blip7b --hallucinations --start_weight 2 --end_weight 10 --img_layer_index 0 --text_layer_index 0
+[2024-09-26 03:40:59] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index 9 --text_layer_index 17
+[2024-09-26 09:13:21] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 1 --end_weight 5 --img_layer_index -1 --text_layer_index -1
+[2024-09-26 11:40:05] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 1 --end_weight 5 --img_layer_index 19 --text_layer_index 21
+[2024-09-26 11:59:30] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 10 --end_weight 15 --img_layer_index -1 --text_layer_index -1
+[2024-09-26 12:00:44] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index -1 --text_layer_index -1
+[2024-09-26 18:47:22] [Status: SUCCESS] VL_ROOT_DIR=/home/nickj/vl-hallucination/ python3 experiment12A.py --model_type llava7b --hallucinations --start_weight 5 --end_weight 10 --img_layer_index 19 --text_layer_index 21
