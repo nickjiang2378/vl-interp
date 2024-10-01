@@ -100,6 +100,20 @@ def run_blip_model(inputs_embeds, captioner, caption_only = True):
             return out[0][0]
         return out
 
+def retrieve_logit_lens_blip(state, img_path):
+    input_embeds = get_image_embeddings(img_path, state["model"])
+    out = run_blip_model(input_embeds, state["model"], caption_only=False)
+    caption = out[0][0]
+    hidden_states = torch.stack(out[4]['hidden_states'][0])
+    with torch.no_grad():
+        softmax_probs = torch.nn.functional.softmax(state["model"].model.llm_model.lm_head(hidden_states.half()), dim=-1)
+    # max over beams
+    softmax_probs = softmax_probs.max(axis=1).values
+    softmax_probs = softmax_probs.cpu().numpy()
+    # reshape into (vocab_size, num_layers, num_tokens)
+    softmax_probs = softmax_probs.transpose(2, 0, 1)
+    return caption, softmax_probs
+
 def string_to_token_ids(string, tokenizer = llm_tokenizer):
     return tokenizer(string)["input_ids"]
 

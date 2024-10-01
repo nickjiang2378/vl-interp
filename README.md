@@ -25,7 +25,6 @@ The configs for InstructBLIP models are under `src/caption/lavis/configs/`. All 
 To install InstructBLIP, please enter the lavis repo for model-specific instructions.
 
 ### Files
-Clone the repo and switch to the `threshold-decoding` branch.
 ```
 git clone git@github.com:nickjiang2378/vl-interp.git
 cd vl-interp

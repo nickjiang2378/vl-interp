@@ -35,6 +35,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from experiments.blip_utils import coco_img_id_to_path, string_to_token_ids
 from experiments.utils import subtract_projection, subtract_projections
+
+from transformers.generation.logits_process import TopKLogitsWarper
+from transformers.generation.logits_process import LogitsProcessorList
 import os
 
 def load_image(image_file):
@@ -108,7 +111,7 @@ def prompt_to_img_input_ids(prompt, tokenizer):
     )
     return input_ids
 
-def run_llava_model(model, model_name, images_tensor, image_sizes, tokenizer, images_embeds = None):
+def run_llava_model(model, model_name, images_tensor, image_sizes, tokenizer, images_embeds = None, hidden_states = False):
     conv = generate_text_prompt(model, model_name)
     input_ids = prompt_to_img_input_ids(conv.get_prompt(), tokenizer)
 
@@ -131,17 +134,54 @@ def run_llava_model(model, model_name, images_tensor, image_sizes, tokenizer, im
             num_beams=num_beams,
             max_new_tokens=max_new_tokens,
             # use_cache=True,
-            use_cache=False,
+            use_cache=True,
             stopping_criteria=[stopping_criteria],
             # output_attentions=False,
+            output_hidden_states=hidden_states,
             return_dict_in_generate=True,
             image_sizes = image_sizes,
         )
+
+    if hidden_states:
+        return input_ids, output
 
     outputs = tokenizer.batch_decode(output.sequences, skip_special_tokens=True)[0].strip()
 
     return outputs
 
+def retrieve_logit_lens_llava(state, img_path):
+    images_tensor, images, image_sizes = generate_images_tensor(state["model"], img_path, state["image_processor"])
+    input_ids, output = run_llava_model(state["model"], state["model_name"], images_tensor, image_sizes, state["tokenizer"], images_embeds=None, hidden_states = True)
+
+    input_token_len = input_ids.shape[1]
+    output_ids = output.sequences
+    n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
+    o = state["tokenizer"].batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]    
+    caption = o.strip()
+
+    hidden_states = torch.stack(output.hidden_states[0])
+
+    logits_warper = TopKLogitsWarper(top_k=50, filter_value=float('-inf'))
+    logits_processor = LogitsProcessorList([])
+
+    with torch.no_grad():
+        curr_layer_logits = state["model"].lm_head(hidden_states)
+        logit_scores = torch.nn.functional.log_softmax(
+            curr_layer_logits, dim=-1
+        )
+        logit_scores_processed = logits_processor(input_ids, logit_scores)
+        logit_scores = logits_warper(input_ids, logit_scores_processed)
+        softmax_probs = torch.nn.functional.softmax(logit_scores, dim=-1)
+    
+    softmax_probs = softmax_probs.detach().cpu().numpy()
+
+    image_token_index = input_ids.tolist()[0].index(-200)
+    softmax_probs = softmax_probs[:, :, image_token_index:image_token_index+(24*24)]
+    # transpose to (vocab_dim, num_layers, num_tokens, num_beams)
+    softmax_probs = softmax_probs.transpose(3, 0, 2, 1)
+    # maximum over all beams
+    softmax_probs = softmax_probs.max(axis=3)
+    return caption, softmax_probs
 
 def remove_h_and_preserve_recall(image_embeddings, recall_embeddings, h_embeddings, weight = 1):
     # recall_embeddings: Tensor[# embeddings, # dims]
@@ -247,4 +287,6 @@ def load_llava_state(model_type, train, device="cuda"):
         "register_pre_hook": register_pre_hook,
         "hidden_layer_embedding": hidden_layer_embedding,
         "model": model,
+        "model_name": model_name,
+        "image_processor": image_processor,
     }
