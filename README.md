@@ -1,21 +1,5 @@
 # Interpreting and Editing Vision-Language Representations to Mitigate Hallucinations
 
-## Code structure
-
-Main files:
-```
-src/
-  caption/
-    __init__.py     # Imports available captioning models
-    base_engine.py  # Base class for captioning models
-    instruct_blip_engine.py  # InstructBLIP captioning models; extends from base.py
-    lavis/       # Source code for Instruct-BLIP models; note that instruct-blip-{7b,13b} use lavis/models/blip2_models/blip2_vicuna_instruct.py)
-    llava/       # Source code for LLaVA models
-```
-
-The configs for InstructBLIP models are under `src/caption/lavis/configs/`.
-
-
 ## Setup
 
 ### Files
