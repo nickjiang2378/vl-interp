@@ -1,6 +1,7 @@
 import torch
 from PIL import Image
 from io import BytesIO
+import matplotlib.pyplot as plt
 import requests
 
 def load_image(image_file):
@@ -17,6 +18,14 @@ def load_images(image_files):
         image = load_image(image_file)
         out.append(image)
     return out
+
+def display_image(image_path):
+    # Open an image file
+    with Image.open(image_path) as img:
+        # Display image
+        plt.imshow(img)
+        plt.axis('off')  # Hide axes
+        plt.show()
 
 def string_to_token_ids(string, tokenizer):
     return tokenizer(string)["input_ids"]
