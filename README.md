@@ -1,34 +1,11 @@
-# Interpreting and Editing the Internal Representations of Vision-language Models
+# Interpreting and Editing Vision-Language Representations to Mitigate Hallucinations
 Official PyTorch Implementation
 
 ### [Paper](https://arxiv.org/) | [Project Page]()
 
-
 ![Teaser](images/teaser.png)
 
-## Code structure
-
-Main files:
-```
-src/
-  main.py           # Entry point for running captioning models
-  utils/
-    options.py      # Lists argparse options for main.py
-  caption/
-    __init__.py     # Imports available captioning models
-    base_engine.py  # Base class for captioning models
-    instruct_blip_engine.py  # InstructBLIP captioning models; extends from base.py
-    lavis/       # Source code for Instruct-BLIP models; note that instruct-blip-{7b,13b} use lavis/models/blip2_models/blip2_vicuna_instruct.py)
-    llava/       # Source code for LLaVA models
-```
-
-The configs for InstructBLIP models are under `src/caption/lavis/configs/`. All model checkpoints can be found under `/shared/spetryk/large_model_checkpoints`.
-
-
 ## Setup
-
-### Models
-To install InstructBLIP, please enter the lavis repo for model-specific instructions.
 
 ### Files
 ```
@@ -36,14 +13,8 @@ git clone git@github.com:nickjiang2378/vl-interp.git
 cd vl-interp
 ```
 
-Symlink my `data` folder under the top-level of your repo, i.e., under `vl-hallucination/`:
-```
-ln -s /home/spetryk/language-prior/data .
-```
-
 ### Environment
 
-Package installation is a bit fragmented at the moment. After creating a new environemtn, you first clone the LLaVA repo, install those required packages, then install this repo, and then there's a couple packages to manually install that haven't been incorporated into the requirements yet.
 ```
 # Create a new conda environment
 conda create -n vl python=3.9
@@ -54,7 +25,6 @@ mkdir src/caption/llava
 cd src/caption/llava
 git clone https://github.com/haotian-liu/LLaVA.git
 cd LLaVA
-git checkout 414cebd318daf563e624ac5d5e02835d40573cb2
 pip3 install -e .
 
 # cd back into repo root
@@ -65,3 +35,29 @@ pip3 install -e .
 pip3 install lightning openai-clip transformers==4.37.2
 ```
 
+### Model Weights
+
+The configs for InstructBLIP models are under `src/caption/lavis/configs/`.
+
+In order to get InstructBLIP (7B) working, you should download [these model weights](https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth) and set the 'pretrained' attribute in `src/caption/lavis/configs/blip2_instruct_vicuna7b.yaml` to the local weights path.
+
+## Demos
+
+Our paper presents two primary methods to interpret and edit VL representations. The first method creates a model confidence score for model-generated objects by projecting image representations to the language vocabulary and taking a max softmax score of the output probabilities. Our second method target and remove objects from image captions by subtracting the text embeddings of targeted objects from these image representations.
+
+To explore internal model confidences and their applications for hallucination detection and zero-shot segmentation, check out `demos/internal_confidence.ipynb`.
+
+To erase objects by editing internal representations, run `demos/object_erasure.ipynb`.
+
+## Evals
+
+Generated captions for the hallucination reduction task (Section 5.2) are in `log_results/`. To evaluate CHAIR scores, run
+```
+python3 metric/chair.py --cap_file <log_file> --cache metric/chair.pkl
+```
+
+You may need to run the following in your conda environment before CHAIR works:
+```
+>>> import nltk
+>>> nltk.download('punkt_tab')
+```

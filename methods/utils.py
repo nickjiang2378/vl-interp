@@ -1,60 +1,37 @@
-def projection(image_embeddings, text_embedding):
-    return (image_embeddings @ text_embedding.T)[0, :, 0] / (text_embedding @ text_embedding.T).squeeze()
+import torch
+from PIL import Image
+from io import BytesIO
+import matplotlib.pyplot as plt
+import requests
 
-def subtract_projection(image_embeddings, text_embedding, weight = 1):
-    image_embeddings = image_embeddings.clone()
-    proj = projection(image_embeddings, text_embedding)
-    for i in range(image_embeddings.shape[1]):
-        if proj[i] > 0:
-            image_embeddings[:, i] -= weight * proj[i] * text_embedding
-    return image_embeddings
+def load_image(image_file):
+    if image_file.startswith("http") or image_file.startswith("https"):
+        response = requests.get(image_file)
+        image = Image.open(BytesIO(response.content)).convert("RGB")
+    else:
+        image = Image.open(image_file).convert("RGB")
+    return image
 
-def subtract_projections(image_embeddings, text_embeddings, weight = 1):
-    # text_embeddings: (# embeds, 1, # dim size)
-    img_embeddings = image_embeddings.clone()
-    for text_embedding in text_embeddings:
-        img_embeddings = subtract_projection(img_embeddings, text_embedding, weight)
-    return img_embeddings
+def load_images(image_files):
+    out = []
+    for image_file in image_files:
+        image = load_image(image_file)
+        out.append(image)
+    return out
 
-def remove_all_hooks(model):
-    # Iterate over all modules in the model
-    for module in model.modules():
-        # Clear forward hooks
-        if hasattr(module, '_forward_hooks'):
-            module._forward_hooks.clear()
-        # Clear backward hooks (if any)
-        if hasattr(module, '_backward_hooks'):
-            module._backward_hooks.clear()
-        # Clear forward pre-hooks (if any)
-        if hasattr(module, '_forward_pre_hooks'):
-            module._forward_pre_hooks.clear()
+def display_image(image_path):
+    # Open an image file
+    with Image.open(image_path) as img:
+        # Display image
+        plt.imshow(img)
+        plt.axis('off')  # Hide axes
+        plt.show()
 
-def generate_mass_edit_hook(text_embeddings, start_edit_index, end_edit_index, layer, weight = 1, minimum_size = 32):
-    def edit_embeddings(module, input, output):
-        new_output = list(output)
-        if new_output[0].shape[1] > minimum_size:
-            print(f"Editing layer {layer}")
-            new_output[0][:, start_edit_index: end_edit_index] = subtract_projections(new_output[0][:, start_edit_index:end_edit_index], text_embeddings, weight = weight)
-        return tuple(new_output)
-    return edit_embeddings
+def string_to_token_ids(string, tokenizer):
+    return tokenizer(string)["input_ids"]
 
-def generate_mass_edit_pre_hook(text_embeddings, start_edit_index, end_edit_index, layer, weight = 1, minimum_size = 32):
-    def edit_embeddings(module, input):
-        new_input = list(input)
-        if new_input[0].shape[1] > minimum_size:
-            print(f"Editing layer {layer}")
-            new_input[0][:, start_edit_index: end_edit_index] = subtract_projections(new_input[0][:, start_edit_index:end_edit_index], text_embeddings, weight = weight)
-        return tuple(new_input)
-    return edit_embeddings
-
-def internal_confidence(tokenizer, softmax_probs, class_):
-    class_token_indices = tokenizer.encode(class_)[1:]
-    return softmax_probs[class_token_indices].max()
-
-def internal_confidence_heatmap(tokenizer, softmax_probs, class_):
-    class_token_indices = tokenizer.encode(class_)[1:]
-    return softmax_probs[class_token_indices].max(axis=0).T
-
-def internal_confidence_segmentation(tokenizer, softmax_probs, class_, num_patches=24):
-    class_token_indices = tokenizer.encode(class_)[1:]
-    return softmax_probs[class_token_indices].max(axis=0).max(axis=0).reshape(num_patches, num_patches).astype(float)
+def coco_img_id_to_name(img_id, train = False):
+    if train:
+        return f"COCO_train2014_{(12 - len(str(img_id))) * '0' + str(img_id)}"
+    else:
+        return f"COCO_val2014_{(12 - len(str(img_id))) * '0' + str(img_id)}"
