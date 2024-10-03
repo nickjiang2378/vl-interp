@@ -1,4 +1,10 @@
 # Interpreting and Editing the Internal Representations of Vision-language Models
+Official PyTorch Implementation
+
+### [Paper](https://arxiv.org/) | [Project Page]()
+
+
+![Teaser](images/teaser.png)
 
 ## Code structure
 
