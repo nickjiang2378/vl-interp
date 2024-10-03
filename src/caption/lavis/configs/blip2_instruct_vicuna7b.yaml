@@ -9,7 +9,8 @@ model:
   load_pretrained: True
 
   #pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth"
-  pretrained: "/home/spetryk/large_model_checkpoints/lmm/instruct-blip/instruct_blip_vicuna7b_trimmed.pth"
+  # pretrained: "/home/spetryk/large_model_checkpoints/lmm/instruct-blip/instruct_blip_vicuna7b_trimmed.pth"
+  pretrained: "path/to/model_checkpoints"
   finetuned: ""
 
   # vit encoder
