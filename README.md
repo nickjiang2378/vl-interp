@@ -48,7 +48,15 @@ pip3 install lightning openai-clip transformers==4.37.2
 
 ## Demos
 
+Our paper presents two primary methods to interpret and edit VL representations. The first method creates a model confidence score for model-generated objects by projecting image representations to the language vocabulary and taking a max softmax score of the output probabilities. Our second method target and remove objects from image captions by subtracting the text embeddings of targeted objects from these image representations.
+
 To explore internal model confidences and zero-shot segmentation, check out `demos/internal_confidence.ipynb`.
+
+To erase objects by editing internal representations, run `demos/object_erasure.ipynb`.
 
 ## Evals
 
+Generated captions after editing image representations are in `log_results/`. To evaluate CHAIR scores, run
+```
+python3 metric/chair.py --cap_file <log_file> --cache metric/chair.pkl
+```
