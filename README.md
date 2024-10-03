@@ -56,7 +56,13 @@ To erase objects by editing internal representations, run `demos/object_erasure.
 
 ## Evals
 
-Generated captions after editing image representations are in `log_results/`. To evaluate CHAIR scores, run
+Generated captions for the hallucination reduction task (Section 5.2) are in `log_results/`. To evaluate CHAIR scores, run
 ```
 python3 metric/chair.py --cap_file <log_file> --cache metric/chair.pkl
+```
+
+You may need to run the following in your conda environment before CHAIR works:
+```
+>>> import nltk
+>>> nltk.download('punkt_tab')
 ```
