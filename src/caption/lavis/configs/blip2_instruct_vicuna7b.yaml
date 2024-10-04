@@ -8,9 +8,8 @@ model:
   load_finetuned: False
   load_pretrained: True
 
-  #pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth"
-  # pretrained: "/home/spetryk/large_model_checkpoints/lmm/instruct-blip/instruct_blip_vicuna7b_trimmed.pth"
-  pretrained: "path/to/model_checkpoints"
+  # Download "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth"
+  pretrained: "path/to/pretrained_weights"
   finetuned: ""
 
   # vit encoder
@@ -24,8 +23,8 @@ model:
   num_query_token: 32
 
   # path to Vicuna checkpoint
-  #llm_model: "./llm/vicuna-7b"
-  llm_model: "/home/spetryk/large_model_checkpoints/llm/vicuna-7b-v1.1"
+  # Download from https://huggingface.co/lmsys/vicuna-7b-v1.1
+  llm_model: "path/to/vicuna7b-v1.1"
 
   # generation configs
   prompt: ""
