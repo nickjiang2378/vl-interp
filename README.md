@@ -1,7 +1,7 @@
 # Interpreting and Editing Vision-Language Representations to Mitigate Hallucinations
 Official PyTorch Implementation
 
-### [Paper](https://arxiv.org/) | [Project Page](https://anishk23733.github.io/vl-interp/)
+### [Paper](https://arxiv.org/pdf/2410.02762) | [Project Page](https://anishk23733.github.io/vl-interp/)
 
 ![Teaser](images/teaser.png)
 
