@@ -78,7 +78,7 @@ You may need to run the following in your conda environment before CHAIR works:
 }
 ```
 
-## Awknowledgments
+## Acknowledgments
 We thank Kayo Yin for her comments and feedback on our paper. YG is supported by the Google
 Fellowship. As part of their affiliation with UC Berkeley, authors were supported in part by the the
 Berkeley Artificial Intelligence Research (BAIR) commons program.
