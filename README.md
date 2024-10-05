@@ -45,7 +45,7 @@ In `src/caption/lavis/configs/blip2_instruct_vicuna7b.yaml`, set the `pretrained
 
 ## Demos
 
-Our paper presents two primary methods to interpret and edit VL representations. The first method creates a model confidence score for model-generated objects by projecting image representations to the language vocabulary and taking a max softmax score of the output probabilities. Our second method target and remove objects from image captions by subtracting the text embeddings of targeted objects from these image representations.
+Our paper presents two primary methods to interpret and edit VL representations. The first method creates a model confidence score for model-generated objects by projecting image representations to the language vocabulary and taking a max softmax score of the output probabilities. Our second method targets and removes objects from image captions by subtracting the text embeddings of targeted objects from these image representations.
 
 To explore internal model confidences and their applications for hallucination detection and zero-shot segmentation, check out `demos/internal_confidence.ipynb`.
 
@@ -63,3 +63,18 @@ You may need to run the following in your conda environment before CHAIR works:
 >>> import nltk
 >>> nltk.download('punkt_tab')
 ```
+
+## BibTeX
+```
+@article{JiangKachinthaya2024VLMs,
+  title={Interpreting and Editing Vision-Language Representations to Mitigate Hallucinations},
+  author={Nick Jiang and Anish Kachinthaya and Suzanne Petryk and Yossi Gandelsman},
+  year={2024},
+  journal={arXiv preprint arXiv:2410.02762},
+}
+```
+
+## Awknowledgments
+We thank Kayo Yin for her comments and feedback on our paper. YG is supported by the Google
+Fellowship. As part of their affiliation with UC Berkeley, authors were supported in part by the the
+Berkeley Artificial Intelligence Research (BAIR) commons program.
