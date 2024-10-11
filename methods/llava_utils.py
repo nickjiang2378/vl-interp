@@ -137,8 +137,8 @@ def retrieve_logit_lens_llava(state, img_path):
     logits_warper = TopKLogitsWarper(top_k=50, filter_value=float('-inf'))
     logits_processor = LogitsProcessorList([])
 
-    with torch.no_grad():
-        curr_layer_logits = state["model"].lm_head(hidden_states)
+    with torch.inference_mode():
+        curr_layer_logits = state["model"].lm_head(hidden_states).cpu().float()
         logit_scores = torch.nn.functional.log_softmax(
             curr_layer_logits, dim=-1
         )
