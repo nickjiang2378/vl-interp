@@ -4,6 +4,7 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 import requests
 
+
 def load_image(image_file):
     if image_file.startswith("http") or image_file.startswith("https"):
         response = requests.get(image_file)
@@ -12,6 +13,7 @@ def load_image(image_file):
         image = Image.open(image_file).convert("RGB")
     return image
 
+
 def load_images(image_files):
     out = []
     for image_file in image_files:
@@ -19,18 +21,21 @@ def load_images(image_files):
         out.append(image)
     return out
 
+
 def display_image(image_path):
     # Open an image file
     with Image.open(image_path) as img:
         # Display image
         plt.imshow(img)
-        plt.axis('off')  # Hide axes
+        plt.axis("off")  # Hide axes
         plt.show()
+
 
 def string_to_token_ids(string, tokenizer):
     return tokenizer(string)["input_ids"]
 
-def coco_img_id_to_name(img_id, train = False):
+
+def coco_img_id_to_name(img_id, train=False):
     if train:
         return f"COCO_train2014_{(12 - len(str(img_id))) * '0' + str(img_id)}"
     else:
