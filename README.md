@@ -33,7 +33,7 @@ cd ../../../../
 pip3 install -e .
 
 # Install some remaining packages
-pip3 install lightning openai-clip transformers==4.37.2
+pip3 install lightning openai-clip transformers==4.37.2 omegaconf python-dotenv
 ```
 
 ### Model Weights
