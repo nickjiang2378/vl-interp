@@ -1,5 +1,5 @@
+import os
 import pickle
-from experiments.blip_utils import coco_img_id_to_path
 import torch
 import tqdm
 import json
@@ -28,8 +28,10 @@ from io import BytesIO
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+from methods.utils import coco_img_id_to_name
 
-import os
+# Change to the root directory, make sure to set the VL_ROOT_DIR environment variable
+os.chdir(os.environ["VL_ROOT_DIR"])
 
 def load_image(image_file):
     if image_file.startswith("http") or image_file.startswith("https"):
@@ -83,7 +85,8 @@ conv.append_message(conv.roles[0], qs)
 conv.append_message(conv.roles[1], None)
 prompt = conv.get_prompt()
 
-img_path = coco_img_id_to_path(184613)
+# Add in a path to an image here
+img_path = os.path.join("./images", coco_img_id_to_name(562150) + ".jpg")
 image_files = [img_path]
 images = load_images(image_files)
 image_sizes = [x.size for x in images]

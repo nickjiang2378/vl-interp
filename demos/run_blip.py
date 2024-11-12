@@ -23,7 +23,7 @@ captioner = InstructBLIPVicuna7B(device=device, return_embeds=True)
 
 vocab_embeddings = get_vocab_embeddings_blip(captioner)
 
-img_path = os.path.join("./images", coco_img_id_to_name(562150))
+img_path = os.path.join("./images", coco_img_id_to_name(562150) + ".jpg")
 img_embeddings = get_image_embeddings(img_path, captioner)
 
 caption = run_blip_model(img_embeddings, captioner)
