@@ -138,7 +138,7 @@ def run_llava_model(
     return outputs
 
 
-def retrieve_logit_lens_llava(state, img_path):
+def retrieve_logit_lens_llava(state, img_path, text_prompt = None):
     images_tensor, images, image_sizes = generate_images_tensor(
         state["model"], img_path, state["image_processor"]
     )
@@ -149,13 +149,12 @@ def retrieve_logit_lens_llava(state, img_path):
         image_sizes,
         state["tokenizer"],
         hidden_states=True,
+        text_prompt=text_prompt
     )
 
-    input_token_len = input_ids.shape[1]
     output_ids = output.sequences
-    n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
     o = state["tokenizer"].batch_decode(
-        output_ids[:, input_token_len:], skip_special_tokens=True
+        output_ids, skip_special_tokens=True
     )[0]
     caption = o.strip()
 
