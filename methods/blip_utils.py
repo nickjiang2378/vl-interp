@@ -18,10 +18,13 @@ TOKEN_UNDERSCORE = chr(
 )  # a lot of tokens have _rain, etc. but the underscore in front is not normal
 
 
-def get_image_embeddings(image_file, captioner):
+def get_image_embeddings(image_file, captioner, prompt = None):
+    if prompt == None:
+        prompt = captioner.prompt
+
     image = load_image(image_file)
     baseline_caption, inputs_embeds, inputs_query, outputs = captioner(
-        image, prompt=captioner.prompt, return_embeds=True
+        image, prompt=prompt, return_embeds=True
     )
     image_embeddings = inputs_query
     return image_embeddings
@@ -75,11 +78,11 @@ def run_blip_model(inputs_embeds, captioner, text_prompt=None, caption_only=True
         return out
 
 
-def retrieve_logit_lens_blip(state, img_path):
-    input_embeds = get_image_embeddings(img_path, state["model"])
-    out = run_blip_model(input_embeds, state["model"], caption_only=False)
+def retrieve_logit_lens_blip(state, img_path, text_prompt = None):
+    input_embeds = get_image_embeddings(img_path, state["model"], prompt = text_prompt)
+    out = run_blip_model(input_embeds, state["model"], caption_only=False, text_prompt=text_prompt)
     caption = out[0][0]
-    hidden_states = torch.stack(out[4]["hidden_states"][0])
+    hidden_states = torch.stack(out[4]["hidden_states"][0])[:, :, :32]
     with torch.no_grad():
         softmax_probs = torch.nn.functional.softmax(
             state["model"].model.llm_model.lm_head(hidden_states.half()), dim=-1
@@ -93,7 +96,7 @@ def retrieve_logit_lens_blip(state, img_path):
 
 
 def get_hidden_text_embedding(
-    input_text, captioner, img_embeddings, vocab_embeddings, layer=10, device="cuda"
+    input_text, captioner, img_embeddings, vocab_embeddings, tokenizer, layer=10, device="cuda"
 ):
     test_input = {"image": torch.ones(1).to("cuda"), "prompt": input_text}
     inputs_embeds = img_embeddings.clone().to(device)
@@ -114,7 +117,7 @@ def get_hidden_text_embedding(
         hidden_states = reshape_hidden_states(out[4].hidden_states)
 
         # Extract the size of the tokens split up
-        token_ids = string_to_token_ids(input_text)
+        token_ids = string_to_token_ids(input_text, tokenizer)
         dist = torch.norm(
             hidden_states[0, 0, len(token_ids) - 1]
             - vocab_embeddings[0, token_ids[len(token_ids) - 1]]
@@ -131,10 +134,10 @@ def load_blip_state(device="cuda"):
     vocabulary = captioner.tokenizer.get_vocab()
     vocab_embeddings = get_vocab_embeddings_blip(captioner, device=device)
 
-    def execute_model(img_path, image_embeddings=None):
+    def execute_model(img_path, image_embeddings=None, text_prompt = None):
         if image_embeddings == None:
-            image_embeddings = get_image_embeddings(img_path, captioner).to(device)
-        return run_blip_model(image_embeddings, captioner)
+            image_embeddings = get_image_embeddings(img_path, captioner, prompt=text_prompt).to(device)
+        return run_blip_model(image_embeddings, captioner, text_prompt=text_prompt)
 
     register_hook = lambda hook, layer: captioner.model.llm_model.model.layers[
         layer
@@ -147,6 +150,7 @@ def load_blip_state(device="cuda"):
         captioner,
         torch.zeros((1, 32, vocab_embeddings.shape[2])),
         vocab_embeddings,
+        captioner.tokenizer,
         layer,
         device=device,
     )

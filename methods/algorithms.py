@@ -54,6 +54,8 @@ def remove_all_hooks(model):
 def generate_mass_edit_hook(
     text_embeddings, start_edit_index, end_edit_index, layer, weight=1, minimum_size=32
 ):
+    if len(text_embeddings) == 0:
+        print("No text embeddings found. Note that no editing will occur.")
     def edit_embeddings(module, input, output):
         new_output = list(output)
         if new_output[0].shape[1] > minimum_size:
