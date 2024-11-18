@@ -40,3 +40,9 @@ def coco_img_id_to_name(img_id, train=False):
         return f"COCO_train2014_{(12 - len(str(img_id))) * '0' + str(img_id)}"
     else:
         return f"COCO_val2014_{(12 - len(str(img_id))) * '0' + str(img_id)}"
+
+def display_chair_results(chair_evals):
+    print(f"Hallucinations: {chair_evals['mscoco_hallucinated_words']}\nCorrectly detected (recall) objects: {chair_evals['recall_words']}\nGround truth: {chair_evals['mscoco_gt_words']}")
+
+def get_device_from_module(module):
+    return next(module.parameters()).device

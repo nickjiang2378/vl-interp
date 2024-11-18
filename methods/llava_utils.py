@@ -197,7 +197,7 @@ def get_hidden_text_embedding(
     target_word, model, vocab_embeddings, tokenizer, layer=5, device="cuda"
 ):
     # Tokenize the target word into input ids
-    token_ids = string_to_token_ids(target_word)
+    token_ids = string_to_token_ids(target_word, tokenizer)
     input_ids = torch.tensor(token_ids).unsqueeze(0).to(device)
 
     # Model parameters
@@ -255,14 +255,14 @@ def load_llava_state(device="cuda"):
     model_path = "liuhaotian/llava-v1.5-7b"
     model_name = get_model_name_from_path(model_path)
     tokenizer, model, image_processor, context_len = load_pretrained_model(
-        model_path, None, model_name
+        model_path, None, model_name, device=device
     )
 
     vocabulary = tokenizer.get_vocab()
     vocab_embeddings = get_vocab_embeddings_llava(model, tokenizer, device=device)
 
     execute_model = lambda img_path, text_prompt=None, image_embeddings=None: get_caption_from_llava(
-        img_path, model, model_name, tokenizer, image_processor
+        img_path, model, model_name, tokenizer, image_processor, text_prompt=text_prompt
     )
     register_hook = (
         lambda hook, layer: model.get_model().layers[layer].register_forward_hook(hook)

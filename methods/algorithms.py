@@ -1,5 +1,5 @@
 import torch
-
+from .utils import get_device_from_module
 
 def get_phrase_embedding(phrase, vocab_embeddings, tokenizer, remove_first=True):
     # returns size (1, 5120)
@@ -20,7 +20,11 @@ def projection(image_embeddings, text_embedding):
     ).squeeze()
 
 
-def subtract_projection(image_embeddings, text_embedding, weight=1):
+def subtract_projection(image_embeddings, text_embedding, weight=1, device = None):
+       # if device is None, don't move the embeddings to any device - keep their pre-existing device configs in tact
+    if device != None:
+        image_embeddings = image_embeddings.to(device)
+        text_embedding = text_embedding.to(device)
     image_embeddings = image_embeddings.clone()
     proj = projection(image_embeddings, text_embedding)
     for i in range(image_embeddings.shape[1]):
@@ -29,11 +33,12 @@ def subtract_projection(image_embeddings, text_embedding, weight=1):
     return image_embeddings
 
 
-def subtract_projections(image_embeddings, text_embeddings, weight=1):
+def subtract_projections(image_embeddings, text_embeddings, weight=1, device = None):
     # text_embeddings: (# embeds, 1, # dim size)
+    # if device is None, don't move the embeddings to any device - keep their pre-existing device configs in tact
     img_embeddings = image_embeddings.clone()
     for text_embedding in text_embeddings:
-        img_embeddings = subtract_projection(img_embeddings, text_embedding, weight)
+        img_embeddings = subtract_projection(img_embeddings, text_embedding, weight, device=device)
     return img_embeddings
 
 
@@ -57,6 +62,7 @@ def generate_mass_edit_hook(
     if len(text_embeddings) == 0:
         print("No text embeddings found. Note that no editing will occur.")
     def edit_embeddings(module, input, output):
+        device = get_device_from_module(module)
         new_output = list(output)
         if new_output[0].shape[1] > minimum_size:
             print(f"Editing layer {layer}")
@@ -64,6 +70,7 @@ def generate_mass_edit_hook(
                 new_output[0][:, start_edit_index:end_edit_index],
                 text_embeddings,
                 weight=weight,
+                device=device
             )
         return tuple(new_output)
 
@@ -73,7 +80,10 @@ def generate_mass_edit_hook(
 def generate_mass_edit_pre_hook(
     text_embeddings, start_edit_index, end_edit_index, layer, weight=1, minimum_size=32
 ):
+    if len(text_embeddings) == 0:
+        print("No text embeddings found. Note that no editing will occur.")
     def edit_embeddings(module, input):
+        device = get_device_from_module(module)
         new_input = list(input)
         if new_input[0].shape[1] > minimum_size:
             print(f"Editing layer {layer}")
@@ -81,6 +91,7 @@ def generate_mass_edit_pre_hook(
                 new_input[0][:, start_edit_index:end_edit_index],
                 text_embeddings,
                 weight=weight,
+                device=device
             )
         return tuple(new_input)
 
