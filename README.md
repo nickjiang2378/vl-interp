@@ -38,9 +38,12 @@ pip3 install lightning openai-clip transformers==4.37.2 omegaconf python-dotenv
 
 ### Model Weights
 
-The model weights for LlaVA are automatically downloaded from hugging face.
+The model weights for LlaVA and LLaVA NeXT are automatically downloaded from hugging face.
 
 The configs for InstructBLIP models are under `src/caption/lavis/configs/`. In order to get InstructBLIP (7B) working, you should download the [pretrained model weights](https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/InstructBLIP/instruct_blip_vicuna7b_trimmed.pth) and [vicuna7b weights](https://huggingface.co/lmsys/vicuna-7b-v1.1). In `src/caption/lavis/configs/blip2_instruct_vicuna7b.yaml`, set the `pretrained` location to the pretrained weight path and `llm_model` to the vicuna7b weight path.
+
+To add Cambrian, clone the [Cambrian repo](https://github.com/cambrian-mllm/cambrian) into the project folder and 
+follow instructions to set up within the project environment. Then, at the top of the file `methods/cambrian_utils.py`, update line 4 to add the path to the Cambrian repository within the project.
 
 ## Demos
 

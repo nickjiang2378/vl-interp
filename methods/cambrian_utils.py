@@ -11,6 +11,43 @@ from methods.utils import load_images, string_to_token_ids
 from PIL import Image
 import requests
 
+def projection(image_embeddings, text_embedding):
+    return (image_embeddings @ text_embedding.T)[0, :, 0] / (
+        text_embedding @ text_embedding.T
+    ).squeeze()
+
+def subtract_projection(image_embeddings, text_embedding, weight=1):
+    image_embeddings = image_embeddings.clone()
+    proj = projection(image_embeddings, text_embedding)
+    for i in range(image_embeddings.shape[1]):
+        if proj[i] > 0:
+            image_embeddings[:, i] -= weight * proj[i] * text_embedding
+            # image_embeddings[:, i] += weight * proj[i] * text_embedding
+    return image_embeddings
+
+def subtract_projections(image_embeddings, text_embeddings, weight=1):
+    # text_embeddings: (# embeds, 1, # dim size)
+    img_embeddings = image_embeddings.clone()
+    for text_embedding in text_embeddings:
+        img_embeddings = subtract_projection(img_embeddings, text_embedding, weight)
+    return img_embeddings
+
+def generate_mass_edit_hook(
+    text_embeddings, start_edit_index, end_edit_index, layer, weight=1, minimum_size=32
+):
+    def edit_embeddings(module, input, output):
+        new_output = list(output)
+        if new_output[0].shape[1] > minimum_size:
+            print(f"Editing layer {layer}")
+            new_output[0][:, start_edit_index:end_edit_index] = subtract_projections(
+                new_output[0][:, start_edit_index:end_edit_index],
+                text_embeddings,
+                weight=weight,
+            )
+        return tuple(new_output)
+
+    return edit_embeddings
+
 def get_vocab_embeddings_cambrian(llm_model, tokenizer, device="cuda"):
     vocab = tokenizer.get_vocab()
     llm_tokens = torch.tensor(list(vocab.values()), dtype=torch.long).unsqueeze(0).to(device)
