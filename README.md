@@ -68,14 +68,13 @@ You may need to run the following in your conda environment before CHAIR works:
 
 ## BibTeX
 ```
-@misc{jiang2024interpretingeditingvisionlanguagerepresentations,
+@inproceedings{
+      jiang2025interpreting,
       title={Interpreting and Editing Vision-Language Representations to Mitigate Hallucinations},
-      author={Nick Jiang and Anish Kachinthaya and Suzie Petryk and Yossi Gandelsman},
-      year={2024},
-      eprint={2410.02762},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2410.02762},
+      author={Nicholas Jiang and Anish Kachinthaya and Suzanne Petryk and Yossi Gandelsman},
+      booktitle={The Thirteenth International Conference on Learning Representations},
+      year={2025},
+      url={https://openreview.net/forum?id=94kQgWXojH}
 }
 ```
 
